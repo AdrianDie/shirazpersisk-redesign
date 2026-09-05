@@ -1,33 +1,40 @@
 (function(){
   "use strict";
 
-  // Ekte meny- og prisdata: forretter/tilbehør/grillretter/gryteretter fra
-  // restaurantens egen bestillingsside (SE MENY), drikkemeny fra shirazpersisk.no.
-  // Delingsretter og dessert har ingen faste retter publisert p.t.
+  // Meny- og prisdata hentet direkte fra shirazpersisk.no/var-meny/ (fullstendig
+  // DOM-gjennomgang av alle kategori-faner 2026-09-05, ikke bare den fanen som
+  // er synlig ved første last). To kjente pris-avvik finnes på selve kildesiden
+  // samtidig (øl og rødvin/hvitvin/rosé har hver to ulike prislister publisert
+  // parallelt) - her er den mest detaljerte av de to beholdt; flagget til Adrian.
   var MENU = {
     delingsretter: {
       label: "Delingsretter",
       heading: "Delingsretter",
-      empty: "Vi setter gjerne sammen et utvalg delingsretter til bordet – spør oss på stedet eller ved bestilling."
+      note: "Sosiale menyer satt sammen for hele bordet.",
+      items: [
+        { name: "6-retters delingsmeny", desc: "Et sosialt måltid inspirert av persisk tradisjon – perfekt for deling. Vinmeny tilgjengelig som tillegg (550,- pr. person).", priceLabel: "545,-", priceSuffix: "pr. person" },
+        { name: "9-retters delingsmeny", desc: "Et sosialt måltid inspirert av persisk tradisjon – perfekt for deling. Minimum 2 personer.", priceLabel: "655,-", priceSuffix: "pr. person" },
+        { name: "Grill mix delingsmeny", desc: "En rikholdig og sosial grillopplevelse: kobideh, joje kebab, chenjeh, barg og lammekoteletter (dande kebab), servert med ris, grillet tomat og nanbrød. Minimum 2–4 personer.", priceLabel: "423,-", priceSuffix: "pr. person" }
+      ]
     },
     forretter: {
       label: "Forretter",
       heading: "Forretter",
       note: "Alle forretter serveres med nybakt nanbrød.",
       items: [
-        { name: "Kashk & Bademjan", desc: "Mint, gurkemeie og løk.", price: 90 },
-        { name: "Hummus", desc: "Kikerter, hvitløk, olivenolje og tahini.", price: 90 },
-        { name: "Burani Bademjan", desc: "Grillet aubergine, yoghurt, hvitløk, pepper og salt.", price: 90 },
-        { name: "Salad Shirazi", desc: "Løk, tomat, agurk, lime, salt og pepper.", price: 90 }
+        { name: "Kashk & Bademjan", desc: "Aubergine, stekt mynte, tørket mynte, gurkemeie og løk. Allergener: melk.", price: 105 },
+        { name: "Suppe Joo", desc: "Havre, tomatpuré, løk, tomater og gulrot. Allergener: hvete.", price: 105 },
+        { name: "Hummus", desc: "Kikerter, hvitløk, olivenolje og tahini. Allergener: sesam.", price: 105 },
+        { name: "Burani Bademjan", desc: "Grillet aubergine med yoghurt, hvitløk og krydder. Allergener: melk.", price: 105 }
       ]
     },
     tilbehor: {
       label: "Tilbehør",
       heading: "Tilbehør",
       items: [
-        { name: "Mat Khiyar", desc: "Yoghurt med agurk og tørket mynte.", price: 75 },
-        { name: "Mast Mosir", desc: "Yoghurt med mosir.", price: 75 },
-        { name: "Nan Brød", desc: "Nybakt, ovnsvarmt brød.", price: 40 }
+        { name: "Mast Khiar", desc: "Yoghurt med agurk og mynte. Allergener: melk.", price: 80 },
+        { name: "Mast Mosir", desc: "Yoghurt med mosir. Allergener: melk.", price: 80 },
+        { name: "Nanbrød", desc: "Allergener: hvete.", price: 45 }
       ]
     },
     grillretter: {
@@ -35,33 +42,48 @@
       heading: "Grillretter",
       note: "Alle grillretter serveres med grillet tomat og ris.",
       items: [
-        { name: "Kobideh", desc: "To spyd med lammekjøttdeig blandet med løk og sort pepper.", price: 280 },
-        { name: "Jooje Kabab", desc: "Yoghurtmarinert kyllingfilet på spyd.", price: 300 },
-        { name: "Chenjeh", desc: "Lammefilet marinert i løk, salt og sort pepper.", price: 300 },
-        { name: "Barg", desc: "Spyd med indrefilet av okse.", price: 310 },
-        { name: "Shiraz Spesial", desc: "Kyllingfilet og lammekjøttdeig marinert med løk, salt og sort pepper.", price: 320 },
-        { name: "Dande Kabab", desc: "Fire marinerte lammekoteletter.", price: 259 }
+        { name: "Kobideh", desc: "To spyd av lammekjøttdeig blandet med løk og sort pepper.", price: 300 },
+        { name: "Joje Kebab", desc: "Spyd med yoghurt- og safranmarinert kyllingfilet. Allergener: melk.", price: 330 },
+        { name: "Chenjeh", desc: "Spyd med lammefilet marinert i løk, salt og sort pepper.", price: 350 },
+        { name: "Barg", desc: "Spyd med ytrefilet av lam.", price: 350 },
+        { name: "Shiraz Spesial", desc: "Safran- og yoghurtmarinert kyllingfilet og lammekjøttdeig blandet med løk og krydder. Allergener: melk.", price: 380 },
+        { name: "Dande Kebab", desc: "Fire marinerte lammekoteletter grillet til perfeksjon.", price: 325 },
+        { name: "Grillet Laks", desc: "Safranmarinert laks krydret med sort pepper, paprika og sitronpepper.", price: 300 }
       ]
     },
     gryteretter: {
       label: "Gryteretter",
       heading: "Gryteretter & risretter",
       items: [
-        { name: "Ghorme Sabzi", desc: "Lammekjøtt, bønner, persille, spinat, koriander, oregano og lime.", price: 280 },
-        { name: "Zereshk Polo Ba Morgh", desc: "Kokt kylling i krydderblanding med ris, mandel og pistasj.", price: 280 },
-        { name: "Gheyme Bademjan", desc: "Lammekjøtt, tomatpuré, løk, karri og gurkemeie, servert med aubergine.", price: 280 },
-        { name: "Baghali Polo & Mahiche", desc: "Lammeknoke med grønne bønner, dill og ris.", price: 310 }
+        { name: "Ghorme Sabzi", desc: "Storfehøyrygg kokt med bønner, urter, lime og persiske krydder. Serveres med ris.", price: 310 },
+        { name: "Zereshk Polo Ba Morgh", desc: "Langtidskokt kyllinglår med krydder, safran og pistasjnøtter. Serveres med ris. Allergener: nøtter.", price: 310 },
+        { name: "Fesenjan", desc: "Kylling i en rik saus av granateple og valnøtter, krydret med safran. Serveres med ris. Allergener: nøtter.", price: 330 },
+        { name: "Gheyme Bademjan", desc: "Storfehøyrygg kokt i tomatpuré, gurkemeie og aromatiske krydder, servert med aubergine og ris.", price: 315 },
+        { name: "Gheyme", desc: "Storfehøyrygg kokt i en tomat- og gurkemeiebasert kryddersaus. Serveres med pommes frites og ris.", price: 310 },
+        { name: "Baghali Polo & Mahiche", desc: "Mørt lammeknoke servert med dill, grønne bønner og ris.", price: 345 },
+        { name: "Dopiaze Meygo", desc: "Reker sautert med løk, pommes frites, gurkemeie, tomatpuré og grønn chili. Serveres med ris. Allergener: skalldyr.", price: 325 },
+        { name: "Dal Adas", desc: "Vegetar. Røde linser kokt med potet, tomatpuré, løk, hvitløk og persiske krydder. Serveres med ris.", price: 270 }
       ]
     },
     dessert: {
       label: "Dessert",
       heading: "Dessert",
-      empty: "Vår dessertmeny varierer – spør gjerne kelneren om dagens utvalg."
+      items: [
+        { name: "Saffron Ice Cream", desc: "Persisk iskrem med safran og pistasjnøtter. Allergener: melk, nøtter.", price: 120 },
+        { name: "Vaniljeis med gulrotjuice", desc: "Vaniljeis toppet med gulrotjuice. Allergener: melk, nøtter.", price: 110 },
+        { name: "Shirmooz", desc: "Melk, banan og honning, toppet med valnøtter. Allergener: melk, nøtter.", price: 120 }
+      ]
     },
     drikker: {
       label: "Drikker",
       heading: "Drikker",
       groups: [
+        {
+          title: "Alkoholfritt",
+          items: [
+            { name: "Mineralvann / Coca-Cola / Cola Zero / Fanta / Sprite", price: 65 }
+          ]
+        },
         {
           title: "Øl",
           items: [
@@ -76,7 +98,30 @@
           title: "Husets spesialdrinker",
           items: [
             { name: "Vermouth Spritz", desc: "En frisk og aromatisk cocktail med Salvano Vermouth di Torino, Salvano Jhamel Brut og en touch av fersk rosmarin.", price: 130 },
-            { name: "Signaturdrink", desc: "En sofistikert cocktail med Salvano Barolo Chinato, Remonda Bollicine Rosé Cuvée, jordbær og et hint av lime.", price: 140 }
+            { name: "Signaturdrink", desc: "En sofistikert cocktail med Salvano Barolo Chinato, Remonda Bollicine Rosé Cuvée, jordbær og et hint av lime.", price: 140 },
+            { name: "Saffron 75", price: 165 },
+            { name: "Persian Lemon Spritz", price: 160 },
+            { name: "Pomegranate Negroni", price: 160 },
+            { name: "Saffron Mule", price: 170 },
+            { name: "Rose & Pistachio Martini", price: 165 }
+          ]
+        },
+        {
+          title: "Classics",
+          items: [
+            { name: "Gin & Tonic", price: 160 },
+            { name: "Cuba Libre", price: 150 },
+            { name: "Vodka Cranberry", price: 150 },
+            { name: "Whiskey Ginger", price: 155 },
+            { name: "Aperol Spritz", price: 155 }
+          ]
+        },
+        {
+          title: "Shots",
+          items: [
+            { name: "Patron Citrus", price: 130 },
+            { name: "Saffron Honey", price: 130 },
+            { name: "Persian Fire", price: 130 }
           ]
         },
         {
@@ -116,6 +161,7 @@
   };
 
   function priceHTML(item){
+    if (item.priceLabel) return item.priceLabel + (item.priceSuffix ? '<br><small>' + item.priceSuffix + '</small>' : '');
     if (item.glass && item.bottle) return 'Glass ' + item.glass + ',-<br>Flaske ' + item.bottle + ',-';
     if (item.bottle) return 'Flaske ' + item.bottle + ',-';
     if (item.glass) return 'Glass ' + item.glass + ',-';
