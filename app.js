@@ -50,4 +50,13 @@
   } else {
     revealEls.forEach(function(el){ el.classList.add('in'); });
   }
+
+  // Google Ads conversion: "Shiraz - Table Booking" (fires on click since booking happens on booking.gastroplanner.no)
+  document.querySelectorAll('a[href*="booking.gastroplanner.no"]').forEach(function(a){
+    a.addEventListener('click', function(){
+      if (typeof gtag === 'function') {
+        gtag('event', 'conversion', {'send_to': 'AW-10846831105/56bsCMOxpJccEIGElrQo'});
+      }
+    });
+  });
 })();
