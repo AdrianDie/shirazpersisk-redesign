@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://adriandie.github.io/shirazpersisk-redesign/sitemap.xml
+Sitemap: https://shirazpersisk.no/sitemap.xml
