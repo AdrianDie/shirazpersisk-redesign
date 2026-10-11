@@ -9,4 +9,12 @@
   <url>
     <loc>https://shirazpersisk.no/catering.html</loc>
   </url>
+  <url>
+    <loc>https://shirazpersisk.no/en/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirazpersisk.no/en/menu.html</loc>
+    <priority>0.7</priority>
+  </url>
 </urlset>

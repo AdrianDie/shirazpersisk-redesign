@@ -14,7 +14,12 @@
 - [Order takeaway](https://order.gastroplanner.no/s/shirazpersiskrestaurantogbar)
 - [Tripadvisor](https://www.tripadvisor.com/Restaurant_Review-g190502-d27527104-Reviews-Shiraz_Persisk_Restaurant_Og_Bar-Bergen_Hordaland_Western_Norway.html)
 
-## Pages
+## Pages in English
+
+- [Home (English)](https://shirazpersisk.no/en/): overview, opening hours, reviews, booking and takeaway
+- [Menu (English)](https://shirazpersisk.no/en/menu.html): food and drinks menu with prices
+
+## Pages in Norwegian
 
 - [Home](https://shirazpersisk.no/): overview, opening hours, booking
 - [Menu](https://shirazpersisk.no/meny.html): food and drinks menu
